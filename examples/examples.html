@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pointy Examples</title>
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.css">
+  <style>
+    fieldset { padding-top: 20px; }
+    label { padding: 10px; }
+    textarea { width: auto; }
+  </style>
+</head>
+<body>
+  <div class="navbar xnavbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="#">Pointy Examples</a>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+        Examples
+        <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu">
+      </ul>
+    </div>
+    <form class="form-inline">
+      <fieldset>
+        <label for="pointy">
+          Pointy:
+          <textarea id="pointy" cols="80" rows="10"></textarea>
+        </label>
+        <label for="json">
+          JSON:
+          <textarea id="json" cols="80" rows="10"></textarea>
+        </label>
+      </fieldset>
+    </form>
+    <div>
+      <input id="render" type="submit" class="btn" value="Render">
+    </div>
+    <form class="form-inline">
+      <fieldset>
+        <label for="output">
+          Output:
+          <textarea id="output" cols="80" rows="10"></textarea>
+        </label>
+      </fieldset>
+    </form>
+  </div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script src="bootstrap/js/bootstrap.js"></script>
+  <script src="../pointy.js"></script>
+  <script>
+   $(function() {
+      $('#render').click(function(e) {
+        e.preventDefault();
+
+        var data,
+            template,
+            fn,
+            output;
+
+        try {
+          data = JSON.parse($('#json').val());
+        } catch(e) {
+          output = 'error parsing data: ' + e.message;
+        }
+
+        if (data) {
+          try {
+            template = pointy.parse($('#pointy').val());
+          } catch (e) {
+            output = 'error parsing template: ' + e.message;
+          }
+        }
+
+        if (template) {
+          try {
+            var fn = template.compile();
+          } catch (e) {
+            output = 'error compiling template: ' + e.message;
+          }
+        }
+
+        if (fn) {
+          try {
+            output = fn(data);
+          } catch(e) {
+            output = 'error rendering template: ' + e.message;
+          }
+        }
+
+        $('#output').val(output);
+      });
+
+      $('div[data-example]').each(function() {
+        var $this = $(this);
+        $('<li>')
+            .appendTo('.dropdown-menu')
+            .append($('<a>', {
+              href: '#',
+              text: $this.data('example')
+            }));
+      });
+
+      $('.dropdown-menu')
+        .on('click', 'a', function(e) {
+            e.preventDefault();
+            var $example = $('div[data-example="' + $(this).text() + '"]');
+            $('#pointy').val($.trim($example.find('script[type="text/pointy"]').text()));
+            $('#json').val($.trim($example.find('script[type="text/json"]').text()));
+            $('#output').val('');
+        });
+
+    });
+  </script>
+
+  <div data-example="for loop">
+    <script type="text/pointy">
+<ul>
+  @for (var i = 0; i < peeps.length; i++) {
+    var p = peeps[i];
+    <li><a href="mailto:@p.email">@p.name</a></li>
+  }
+</ul>
+    </script>
+    <script type="text/json">
+{
+  "peeps": [
+    { "name": "Alice", "email": "alice@example.com" },
+    { "name": "Bob", "email": "bob@example.net" },
+    { "name": "Charlie", "email": "chuck@example.org" }
+  ]
+}
+    </script>
+  </div>
+
+  <div data-example="text blocks">
+    <script type="text/pointy">
+@if (foo) {
+  <text>bar</text>
+}
+    </script>
+    <script type="text/json">{ "foo": true }</script>
+  </div>
+
+  <div data-example="email address">
+    <script type="text/pointy">
+Email me at foo@example.com!
+    </script>
+    <script type="text/json">{}</script>
+  </div>
+
+</body>
+</html>
+

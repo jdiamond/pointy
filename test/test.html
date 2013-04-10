@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Pointy Tests</title>
+
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>assert = chai.assert;</script>
+
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script>mocha.setup('bdd');</script>
+
+    <script src="../pointy.js"></script>
+    <script src="test.js"></script>
+
+    <script>$(function () { mocha.run(); });</script>
+</head>
+<body>
+    <div id="mocha"></div>
+</body>
+</html>

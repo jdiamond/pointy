@@ -1,0 +1,16 @@
+{
+  "name": "pointy",
+  "version": "0.1.0",
+  "description": "a template language that embeds JavaScript in HTML",
+  "main": "pointy.js",
+  "devDependencies": {
+    "chai": "*",
+    "mocha": "*"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": "https://github.com/jdiamond/pointy.git",
+  "author": "Jason Diamond",
+  "license": "MIT"
+}
