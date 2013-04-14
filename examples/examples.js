@@ -4,6 +4,8 @@ $(function() {
   var jsonCode = CodeMirror($('#json')[0], { mode: 'javascript', json: true });
   var outputCode = CodeMirror($('#output')[0], { mode: 'htmlmixed' });
 
+  selectExample($('div[data-example]').data('example'));
+
   $('div[data-example]').each(function() {
     $('<li>')
         .appendTo('.dropdown-menu')
@@ -15,11 +17,15 @@ $(function() {
 
   $('.dropdown-menu').on('click', 'a', function(e) {
       e.preventDefault();
-      var $example = $('div[data-example="' + $(this).text() + '"]');
-      pointyCode.setValue($.trim($example.find('script[type$="pointy"]').text()));
-      jsonCode.setValue($.trim($example.find('script[type$="json"]').text()));
-      outputCode.setValue('');
+      selectExample($(this).text());
     });
+
+  function selectExample(name) {
+    var $example = $('div[data-example="' + name + '"]');
+    pointyCode.setValue($.trim($example.find('script[type$="pointy"]').text()));
+    jsonCode.setValue($.trim($example.find('script[type$="json"]').text()));
+    outputCode.setValue('');
+  }
 
   $('#render').click(function(e) {
     e.preventDefault();
