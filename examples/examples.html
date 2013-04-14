@@ -1,124 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
   <title>Pointy Examples</title>
+
   <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
   <link rel="stylesheet" href="bootstrap/css/bootstrap-responsive.css">
-  <style>
-    fieldset { padding-top: 20px; }
-    label { padding: 10px; }
-    textarea { width: auto; }
-  </style>
+  <link rel="stylesheet" href="codemirror/codemirror.css">
+  <link rel="stylesheet" href="examples.css">
 </head>
 <body>
-  <div class="navbar xnavbar-fixed-top">
+
+  <div class="navbar navbar-static-top">
     <div class="navbar-inner">
       <div class="container">
-        <a class="brand" href="#">Pointy Examples</a>
+        <div class="dropdown" style="float: left;">
+            <a class="brand dropdown-toggle" data-toggle="dropdown" href="#">Pointy Examples <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+            </ul>
+        </div>
       </div>
     </div>
   </div>
+
   <div class="container-fluid">
-    <div class="dropdown">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-        Examples
-        <b class="caret"></b>
-      </a>
-      <ul class="dropdown-menu">
-      </ul>
+
+    <div class="row-fluid">
+      <div id="pointy" class="span6">
+        <label>Pointy</label>
+      </div>
+      <div id="json" class="span6">
+        <label>JSON</label>
+      </div>
     </div>
-    <form class="form-inline">
-      <fieldset>
-        <label for="pointy">
-          Pointy:
-          <textarea id="pointy" cols="80" rows="10"></textarea>
-        </label>
-        <label for="json">
-          JSON:
-          <textarea id="json" cols="80" rows="10"></textarea>
-        </label>
-      </fieldset>
-    </form>
-    <div>
+
+    <div class="row-fluid text-center">
       <input id="render" type="submit" class="btn" value="Render">
     </div>
-    <form class="form-inline">
-      <fieldset>
-        <label for="output">
-          Output:
-          <textarea id="output" cols="80" rows="10"></textarea>
-        </label>
-      </fieldset>
-    </form>
+
+    <div class="row-fluid">
+      <div id="output" class="span8 offset2">
+        <label>HTML</label>
+      </div>
+    </div>
+
   </div>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+  <script src="jquery.js"></script>
   <script src="bootstrap/js/bootstrap.js"></script>
+  <script src="codemirror/codemirror.js"></script>
+  <script src="codemirror/css.js"></script>
+  <script src="codemirror/javascript.js"></script>
+  <script src="codemirror/xml.js"></script>
+  <script src="codemirror/htmlmixed.js"></script>
+  <script src="codemirror/htmlembedded.js"></script>
+
   <script src="../pointy.js"></script>
-  <script>
-   $(function() {
-      $('#render').click(function(e) {
-        e.preventDefault();
 
-        var data,
-            template,
-            fn,
-            output;
-
-        try {
-          data = JSON.parse($('#json').val());
-        } catch(e) {
-          output = 'error parsing data: ' + e.message;
-        }
-
-        if (data) {
-          try {
-            template = pointy.parse($('#pointy').val());
-          } catch (e) {
-            output = 'error parsing template: ' + e.message;
-          }
-        }
-
-        if (template) {
-          try {
-            var fn = template.compile();
-          } catch (e) {
-            output = 'error compiling template: ' + e.message;
-          }
-        }
-
-        if (fn) {
-          try {
-            output = fn(data);
-          } catch(e) {
-            output = 'error rendering template: ' + e.message;
-          }
-        }
-
-        $('#output').val(output);
-      });
-
-      $('div[data-example]').each(function() {
-        var $this = $(this);
-        $('<li>')
-            .appendTo('.dropdown-menu')
-            .append($('<a>', {
-              href: '#',
-              text: $this.data('example')
-            }));
-      });
-
-      $('.dropdown-menu')
-        .on('click', 'a', function(e) {
-            e.preventDefault();
-            var $example = $('div[data-example="' + $(this).text() + '"]');
-            $('#pointy').val($.trim($example.find('script[type="text/pointy"]').text()));
-            $('#json').val($.trim($example.find('script[type="text/json"]').text()));
-            $('#output').val('');
-        });
-
-    });
-  </script>
+  <script src="examples.js"></script>
 
   <div data-example="for loop">
     <script type="text/pointy">
@@ -129,7 +67,7 @@
   }
 </ul>
     </script>
-    <script type="text/json">
+    <script type="application/json">
 {
   "peeps": [
     { "name": "Alice", "email": "alice@example.com" },
@@ -146,16 +84,15 @@
   <text>bar</text>
 }
     </script>
-    <script type="text/json">{ "foo": true }</script>
+    <script type="application/json">{ "foo": true }</script>
   </div>
 
   <div data-example="email address">
     <script type="text/pointy">
 Email me at foo@example.com!
     </script>
-    <script type="text/json">{}</script>
+    <script type="application/json">{}</script>
   </div>
 
 </body>
 </html>
-
