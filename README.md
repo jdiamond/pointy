@@ -4,6 +4,10 @@ It was heavily inspired by the Razor template language.
 
 It works with both Node.js and in the browser.
 
+You can run some examples in your browser here:
+
+http://jdiamond.github.io/pointy/examples/examples.html
+
 Installation
 ============
 
