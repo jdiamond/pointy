@@ -92,5 +92,34 @@ Email me at foo@example.com!
     <script type="application/json">{}</script>
   </div>
 
+  <div data-example="functions">
+    <script type="text/pointy">
+@if (peeps.length) {
+  <h2>People:</h2>
+  listPeople(peeps);
+} else {
+  <p>Sorry, there's nobody here!</p>
+}
+
+@function listPeople(peeps) {
+  <ul>
+    @for (var i = 0; i < peeps.length; i++) {
+      var p = peeps[i];
+      <li><a href="mailto:@p.email">@p.name</a></li>
+    }
+  </ul>
+}
+    </script>
+    <script type="application/json">
+{
+  "peeps": [
+    { "name": "Alice", "email": "alice@example.com" },
+    { "name": "Bob", "email": "bob@example.net" },
+    { "name": "Charlie", "email": "chuck@example.org" }
+  ]
+}
+    </script>
+  </div>
+
 </body>
 </html>
